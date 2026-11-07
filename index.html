@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diwali at Casa dello Studente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: #06161a;
+    --ink: #123c42;
+    --teal: #2f8f86;
+    --mint: #fffdd0;
+    --sky: #8fc6df;
+    --pink: #f4a7b9;
+    --butter: #f6d98b;
+    --peach: #f6b78a;
+    --ivory: #8ccdbb;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    background: var(--night);
+    color: var(--ink);
+    font-family: "Lora", Georgia, serif;
+  }
+  /* the pastel world fades in once the diya is lit */
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    opacity: 0; transition: opacity 1.8s ease .2s;
+    background:
+      radial-gradient(circle at 50% 22%, rgba(255,200,140,.5) 0, rgba(246,167,185,.22) 30%, transparent 68%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cg fill='none' stroke='%232f7f7a' stroke-opacity='.16' stroke-width='1.2'%3E%3Cpath d='M30 6 54 30 30 54 6 30Z'/%3E%3Ccircle cx='30' cy='30' r='8'/%3E%3C/g%3E%3Cg fill='%23f08aa6' fill-opacity='.45'%3E%3Ccircle cx='0' cy='0' r='3'/%3E%3Ccircle cx='60' cy='0' r='3'/%3E%3Ccircle cx='0' cy='60' r='3'/%3E%3Ccircle cx='60' cy='60' r='3'/%3E%3C/g%3E%3C/svg%3E"),
+      linear-gradient(180deg, #3d9985, #3a97ad 55%, #5aa58a);
+  }
+  body.lit::before { opacity: 1; }
+
+  main { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+         justify-content: center; text-align: center; padding: 3rem 1.25rem; gap: 1rem; }
+
+  /* ---- diya + mandala ---- */
+  .stage { position: relative; display: grid; place-items: center; }
+  #mandala { position: absolute; width: 190%; left: -45%; top: -45%; z-index: 0; opacity: 0;
+             transition: opacity 1.6s ease .5s; pointer-events: none; }
+  body.lit #mandala { opacity: .95; animation: spin 90s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  #diya { position: relative; z-index: 1; background: none; border: 0; padding: .5rem; cursor: pointer;
+          width: min(62vw, 250px); border-radius: 50%; transition: width .9s ease; }
+  body.lit #diya { width: min(40vw, 160px); cursor: default; }
+  #diya:focus-visible { outline: 3px solid var(--butter); outline-offset: 4px; }
+  #diya svg { width: 100%; height: auto; overflow: visible; display: block; }
+  .flame { transform-origin: 100px 86px; transform: scale(0); opacity: 0;
+           transition: transform .7s cubic-bezier(.2,1.4,.4,1), opacity .4s; }
+  body.lit .flame { transform: scale(1); opacity: 1; animation: flicker 2.2s ease-in-out .7s infinite; }
+  .halo { opacity: 0; transition: opacity 1s; }
+  body.lit .halo { opacity: 1; }
+  @keyframes flicker {
+    0%,100% { transform: scale(1) rotate(0); }
+    25% { transform: scale(1.05,.95) rotate(-2deg); }
+    50% { transform: scale(.97,1.06) rotate(1.5deg); }
+    75% { transform: scale(1.03,.98) rotate(-1deg); }
+  }
+  .hint { font-size: 1.05rem; font-style: italic; margin: 0; color: var(--butter); transition: opacity .5s; }
+  body.lit .hint { opacity: 0; height: 0; overflow: hidden; }
+
+  /* ---- invitation card ---- */
+  .invite { max-width: 36rem; width: 100%; margin-top: 1.5rem; padding: 2rem 1.4rem 2.2rem;
+            border: 4px solid var(--butter); border-radius: 22px; position: relative;
+            background: var(--ivory);
+            box-shadow: 0 0 0 5px var(--sky), 0 14px 40px rgba(18,60,66,.22);
+            opacity: 0; visibility: hidden; transform: translateY(16px);
+            transition: opacity 1.2s ease .6s, transform 1.2s ease .6s, visibility 0s linear 1.8s; }
+  .invite::before { content: ""; position: absolute; inset: 8px; border: 1.5px dashed var(--pink);
+                    border-radius: 14px; pointer-events: none; }
+  body.lit .invite { opacity: 1; visibility: visible; transform: none; transition-delay: .6s,.6s,0s; }
+  .shubh { margin: 0; font-size: 1.1rem; color: var(--ink); font-weight: 500; font-style: italic; }
+  h1 { font-family: "Rozha One", Georgia, serif; font-weight: 400; margin: .3rem 0 .6rem;
+       font-size: clamp(2.6rem, 10vw, 4.2rem); line-height: 1.05; color: #0f4a50;
+       text-shadow: 3px 3px 0 var(--peach), 5px 5px 0 rgba(246,167,185,.6); }
+  .intro { font-size: 1.1rem; line-height: 1.7; margin: 0 auto 1.4rem; max-width: 28rem; }
+
+  .details { display: grid; gap: .7rem; text-align: left; margin: 0 0 1.6rem; }
+  .row { display: grid; grid-template-columns: 2.6rem 1fr; align-items: center; gap: .8rem;
+         padding: .7rem .9rem; border-radius: 14px; border-left: 5px solid var(--c);
+         background: color-mix(in srgb, var(--c) 55%, var(--ivory)); }
+  .row:nth-child(1) { --c: var(--butter); } .row:nth-child(2) { --c: var(--sky); }
+  .row:nth-child(3) { --c: var(--pink); }   .row:nth-child(4) { --c: var(--peach); }
+  .row .ico { font-size: 1.7rem; text-align: center; }
+  .row b { display: block; color: var(--ink); opacity: .75; font-size: .92rem; font-weight: 500; font-style: italic; margin-bottom: .1rem; }
+  .row span { font-size: 1.05rem; line-height: 1.45; }
+  .row a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--teal); text-underline-offset: 3px; }
+
+  .actions { display: grid; gap: .7rem; }
+  .btn { display: block; padding: .85rem 1.2rem; border-radius: 999px; border: 0; cursor: pointer;
+         font: 600 1.02rem "Lora", Georgia, serif; text-decoration: none; text-align: center; color: var(--ink); }
+  .btn.cal { background: var(--butter); }
+  .btn.music { background: var(--sky); }
+  .btn.chat { background: var(--pink); }
+  .btn:hover { filter: brightness(1.05) saturate(1.1); }
+  .btn:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+  .foot { margin: 1.4rem 0 0; font-size: 1rem; color: var(--ink); font-style: italic; }
+
+  @media (min-width: 560px) { .actions { grid-template-columns: repeat(3, 1fr); } }
+  @media (prefers-reduced-motion: reduce) {
+    body.lit .flame, body.lit #mandala { animation: none; }
+    .invite, .flame, .halo, #mandala, #diya, body::before { transition-duration: .01s; transition-delay: 0s; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="stage">
+    <svg id="mandala" viewBox="0 0 200 200" aria-hidden="true"></svg>
+    <button id="diya" aria-label="Light the diya to open your invitation">
+      <svg viewBox="0 0 200 160" aria-hidden="true">
+        <defs>
+          <radialGradient id="g" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#ffb338" stop-opacity=".9"/>
+            <stop offset="1" stop-color="#ffb338" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="clay" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#e0702a"/><stop offset="1" stop-color="#a8431c"/>
+          </linearGradient>
+        </defs>
+        <circle class="halo" cx="100" cy="70" r="90" fill="url(#g)"/>
+        <g class="flame">
+          <path d="M100 30C118 56 120 76 100 88 80 76 82 56 100 30Z" fill="#ffb338"/>
+          <path d="M100 52C109 66 110 78 100 86 90 78 91 66 100 52Z" fill="#fff0d4"/>
+        </g>
+        <rect x="98" y="84" width="4" height="9" rx="2" fill="#3a1245"/>
+        <path d="M26 96Q100 92 174 96 166 142 100 146 34 142 26 96Z" fill="url(#clay)"/>
+        <path d="M26 96Q100 104 174 96 100 90 26 96Z" fill="#6d2a12"/>
+        <path d="M52 112Q100 122 148 112" fill="none" stroke="#ffb338" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 7"/>
+      </svg>
+    </button>
+  </div>
+  <p class="hint">Tap the diya to light it</p>
+
+  <section class="invite" aria-live="polite">
+    <p class="shubh">Shubh Deepavali</p>
+    <h1 id="title"></h1>
+    <p class="intro" id="intro"></p>
+    <div class="details">
+      <div class="row"><div class="ico">🗓️</div><div><b>Kab</b><span id="when"></span></div></div>
+      <div class="row"><div class="ico">📍</div><div><b>Kidhar</b><span><a id="where" target="_blank" rel="noopener"></a></span></div></div>
+      <div class="row"><div class="ico">🍛</div><div><b>Khana?</b><span id="potluck"></span></div></div>
+    </div>
+    <div class="actions">
+      <a class="btn cal" id="cal" target="_blank" rel="noopener">calendar</a>
+      <a class="btn music" id="music" target="_blank" rel="noopener">playlist</a>
+      <a class="btn chat" id="chat" target="_blank" rel="noopener">rsvp yes</a>
+    </div>
+    <p class="foot" id="foot"></p>
+  </section>
+</main>
+
+<script>
+  // ✏️ EDIT THIS BLOCK: everything on the invite comes from here
+  const INVITE = {
+    title: "Pardesi Diwali",
+    intro: "looking forward to ghar ki feeling with you!",
+    when: "Sunday, 8 November · 3:00 pm – 11:00 pm",
+    where: "Casa dello Studente, Milan",
+    potluck: "bring whatever you like",
+    foot: "mere tumhare sabke liye, happy diwali🪔",
+    calendarLink: "https://calendar.app.google/Pato1AJMXrcwmHkn8",
+    playlistLink: "https://open.spotify.com/playlist/0aD1VuxOOUvwlacgzcjMcl?si=xVHOohvtRA6bBvhbXqzS8g&utm_source=copy-link&pi=l-u4X_G-SuaeQ",
+    whatsappLink: "https://chat.whatsapp.com/FA2lPPwTrEtJwHvjJdIeKH?s=cl&p=i&mlu=4&ilr=4&iam=2",
+    mapLink: "https://maps.app.goo.gl/tQDwgJiZ3iTHemhP8?g_st=ic"
+  };
+
+  const $ = id => document.getElementById(id);
+  $("title").textContent = INVITE.title;
+  $("intro").textContent = INVITE.intro;
+  $("when").textContent = INVITE.when;
+  $("where").textContent = INVITE.where;
+  $("where").href = INVITE.mapLink;
+  $("dress").textContent = INVITE.dress;
+  $("potluck").textContent = INVITE.potluck;
+  $("foot").textContent = INVITE.foot;
+  $("cal").href = INVITE.calendarLink;
+  $("music").href = INVITE.playlistLink;
+  $("chat").href = INVITE.whatsappLink;
+
+  // mandala: rings of pastel petals
+  const NS = "http://www.w3.org/2000/svg";
+  const m = $("mandala");
+  const rings = [
+    { n: 16, cy: 18, rx: 9, ry: 22, fill: "#f6b78a" },
+    { n: 16, cy: 34, rx: 8, ry: 18, fill: "#f4a7b9" },
+    { n: 12, cy: 52, rx: 9, ry: 20, fill: "#8fd1bd" },
+    { n: 12, cy: 68, rx: 7, ry: 14, fill: "#a9d3e6" }
+  ];
+  rings.forEach((r, k) => {
+    for (let i = 0; i < r.n; i++) {
+      const e = document.createElementNS(NS, "ellipse");
+      e.setAttribute("cx", 100); e.setAttribute("cy", r.cy);
+      e.setAttribute("rx", r.rx); e.setAttribute("ry", r.ry);
+      e.setAttribute("fill", r.fill); e.setAttribute("fill-opacity", ".9");
+      e.setAttribute("stroke", "#2f8f86"); e.setAttribute("stroke-width", "1.2");
+      e.setAttribute("transform", `rotate(${(360 / r.n) * i + (k % 2 ? 360 / r.n / 2 : 0)} 100 100)`);
+      m.appendChild(e);
+    }
+  });
+
+  // light the diya
+  const diya = $("diya");
+  diya.addEventListener("click", () => {
+    document.body.classList.add("lit");
+    diya.setAttribute("aria-label", "Diya is lit");
+    diya.disabled = true;
+  });
+</script>
+</body>
+</html>
